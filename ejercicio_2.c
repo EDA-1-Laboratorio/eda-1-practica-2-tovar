@@ -2,60 +2,57 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define FILAS 5
-#define COLS 5
-
 int main() {
-    int matriz[FILAS][COLS];
-    int *ptr = &matriz[0][0];
-    int *max1 = ptr; // Apuntador al valor más grande
-    int *max2 = ptr; // Apuntador al segundo valor más grande
-    int total = FILAS * COLS;
+    int matriz[5][5];
+    int *ptr = &matriz[0][0];  // apuntador al primer elemento
+    int max1, max2;
+    int *dirMax1, *dirMax2;
 
     srand(time(NULL));
 
-    // 1. Llenado y visualización
-    printf("--- MATRIZ DE BUSQUEDA ---\n");
-    for (int i = 0; i < total; i++) {
-        *(ptr + i) = rand() % 100;
-        printf("%d\t", *(ptr + i));
-        if ((i + 1) % COLS == 0) printf("\n");
+    // 1. Llenar la matriz con valores aleatorios
+    for (int i = 0; i < 25; i++) {
+        *(ptr + i) = rand() % 100;  // valores entre 0 y 99
     }
 
-    // 2. Lógica de búsqueda con dos apuntadores
-    // Inicializamos max2 al segundo elemento para evitar comparar contra el mismo sitio al inicio
-    max2 = (ptr + 1);
-    
-    // Asegurar que max1 apunte al mayor de los dos primeros
-    if (*max2 > *max1) {
-        int *temp = max1;
-        max1 = max2;
-        max2 = temp;
+    // 2. Inicializar máximos
+    max1 = *ptr;
+    max2 = *ptr;
+    dirMax1 = ptr;
+    dirMax2 = ptr;
+
+    // 3. Buscar el mayor y el segundo mayor usando apuntadores
+    for (int i = 0; i < 25; i++) {
+        if (*(ptr + i) > max1) {
+            max2 = max1;
+            dirMax2 = dirMax1;
+
+            max1 = *(ptr + i);
+            dirMax1 = ptr + i;
+        } 
+        else if (*(ptr + i) > max2 && *(ptr + i) != max1) {
+            max2 = *(ptr + i);
+            dirMax2 = ptr + i;
+        }
     }
 
-    for (int i = 2; i < total; i++) {
-        int *actual = (ptr + i);
-        
-        // --- TU CÓDIGO AQUÍ ---
-        // Caso A:
-         if (*actual > *max1) {
-            max2 = max1;   // el anterior máximo pasa a ser segundo máximo
-            max1 = actual; // el nuevo máximo es el actual
-        }
-        // Caso B: 
-        else if (*actual > *max2) {
-            max2 = actual; // se actualiza solo el segundo máximo
-        }
-       
-    // 3. Cálculo de distancia
-    // La resta de apuntadores da la distancia en número de elementos
-    long distancia = (max1 > max2) ? (max1 - max2) : (max2 - max1);
+    // 4. Imprimir matriz
+    printf("Matriz 5x5:\n");
+    for (int i = 0; i < 25; i++) {
+        printf("%3d ", *(ptr + i));
+        if ((i + 1) % 5 == 0) printf("\n");
+    }
 
-    printf("\n--- REPORTE DE MEMORIA ---");
-    printf("\n1er Maximo: %d en la direccion %p", *max1, (void*)max1);
-    printf("\n2do Maximo: %d en la direccion %p", *max2, (void*)max2);
-    printf("\nDistancia entre ellos: %ld elementos de tipo int", distancia);
-    printf("\nDistancia en bytes: %ld bytes\n", distancia * sizeof(int));
+    // 5. Resultados
+    printf("\nMayor valor: %d\n", max1);
+    printf("Direccion de memoria del mayor: %p\n", (void*)dirMax1);
+
+    printf("\nSegundo mayor valor: %d\n", max2);
+    printf("Direccion de memoria del segundo mayor: %p\n", (void*)dirMax2);
+
+    // 6. Distancia en memoria
+    printf("\nDistancia entre direcciones (en posiciones de int): %ld\n",
+           dirMax1 - dirMax2);
 
     return 0;
 }
