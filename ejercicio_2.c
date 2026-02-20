@@ -60,6 +60,6 @@ int main() {
 // PREGUNTA: Si el max1 se encuentra en la dirección 0x100 y el max2 en la 0x108,
 // y estamos trabajando con enteros (int) de 4 bytes, 
 // ¿qué valor numérico devolverá la operación max2 - max1 y por qué no devuelve simplemente 8?
-//La operación max2 - max1 devuelve 2, porque la resta de apuntadores en C se expresa en número 
+//RESPUESTA: La operación max2 - max1 devuelve 2, porque la resta de apuntadores en C se expresa en número 
 //de elementos del tipo apuntado (int), no en bytes. Como entre 0x100 y 0x108 hay 8 bytes y cada
 //int ocupa 4 bytes, el resultado es 8 / 4 = 2.
