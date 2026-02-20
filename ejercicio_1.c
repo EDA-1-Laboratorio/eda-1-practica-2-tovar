@@ -4,17 +4,18 @@ void invertirCadena(char *inicio) {
     char *fin = inicio;
     char aux;
 
-    // 1. Mover 'fin' al último carácter antes del '\0'
     while (*fin != '\0') {
         fin++;
     }
-    fin--; 
+    fin--;
 
-    // 2. Intercambio de valores
     while (inicio < fin) {
-        // --- TU CÓDIGO AQUÍ ---
-        // Implementa el intercambio usando la variable 'aux'
-        // Desplaza los apuntadores adecuadamente
+        aux = *inicio;
+        *inicio = *fin;
+        *fin = aux;
+
+        inicio++;
+        fin--;
     }
 }
 
@@ -29,3 +30,8 @@ int main() {
 //Durante el ciclo de intercambio (swap), la condición de parada es while (inicio < fin). 
 //Explica detalladamente qué es lo que se está comparando físicamente en esa instrucción (¿valores o direcciones?) 
 // y qué sucedería si la condición fuera while (*inicio != *fin).
+//RESPUESTA:En while (inicio < fin) se están comparando direcciones de memoria, no los caracteres.
+//Como inicio y fin son apuntadores, el operador < verifica cuál está antes en memoria. El ciclo continúa mientras no se hayan cruzado, a
+//segurando que el intercambio se haga correctamente desde los extremos hacia el centro.
+//Si fuera while (*inicio != *fin), entonces se compararían los valores (los caracteres). Eso sería incorrecto porque si hay letras iguales
+//en posiciones opuestas (por ejemplo en "ANA"), el ciclo podría detenerse antes de tiempo y la cadena no se invertiría bien.
